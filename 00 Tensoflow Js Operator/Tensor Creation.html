@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tensorflow.js - Tensor Creation</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  </head>
+  <body>
+    <h1>Tensorflow.js - Tensor Creation</h1>
+    <div id="output"></div>
+    <script>
+      // Function to append text to the output div
+      function appendOutput(text) {
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML += `<p>${text}</p>`;
+      }
+
+      // Example of tf.tensor
+      const tensorCode =
+        "const tensor = tf.tensor([1, 2, 3, 4], [2, 2], 'int32');";
+      const tensor = tf.tensor([1, 2, 3, 4], [2, 2], "int32");
+      appendOutput(`${tensorCode} <br>tf.tensor: ${tensor.toString()}`);
+
+      // Example of tf.buffer
+      const bufferCode =
+        "const buffer = tf.buffer([2, 2], 'float32', [1, 2, 3, 4]);";
+      const buffer = tf.buffer([2, 2], "float32", [1, 2, 3, 4]);
+      appendOutput(
+        `${bufferCode} <br>tf.buffer: ${buffer.toTensor().toString()}`
+      );
+
+      // Example of tf.clone
+      const cloneCode = "const clonedTensor = tf.clone(tensor);";
+      const clonedTensor = tf.clone(tensor);
+      appendOutput(`${cloneCode} <br>tf.clone: ${clonedTensor.toString()}`);
+
+      // Example of tf.diag
+      const diagCode = "const diagTensor = tf.diag(tensor.flatten());";
+      const diagTensor = tf.diag(tensor.flatten());
+      appendOutput(`${diagCode} <br>tf.diag: ${diagTensor.toString()}`);
+
+      // Example of tf.linspace
+      const linspaceCode = "const linspaceTensor = tf.linspace(0, 1, 10);";
+      const linspaceTensor = tf.linspace(0, 1, 10);
+      appendOutput(
+        `${linspaceCode} <br>tf.linspace: ${linspaceTensor.toString()}`
+      );
+
+      // Example of tf.oneHot
+      const oneHotCode = "const oneHotTensor = tf.oneHot([0, 1, 2], 3);";
+      const oneHotTensor = tf.oneHot([0, 1, 2], 3);
+      appendOutput(`${oneHotCode} <br>tf.oneHot: ${oneHotTensor.toString()}`);
+
+      // Example of tf.ones
+      const onesCode = "const onesTensor = tf.ones([2, 2]);";
+      const onesTensor = tf.ones([2, 2]);
+      appendOutput(`${onesCode} <br>tf.ones: ${onesTensor.toString()}`);
+
+      // Example of tf.print
+      const printCode = "tensor.print(true);";
+      appendOutput(`${printCode} <br>tf.print:`);
+      tensor.print(true); // verbose is true
+
+      // Example of tf.range
+      const rangeCode = "const rangeTensor = tf.range(0, 10, 2);";
+      const rangeTensor = tf.range(0, 10, 2);
+      appendOutput(`${rangeCode} <br>tf.range: ${rangeTensor.toString()}`);
+
+      // Example of tf.truncatedNormal
+      const truncatedNormalCode =
+        "const truncatedNormalTensor = tf.truncatedNormal([2, 2], 0, 1, 'float32', 42);";
+      const truncatedNormalTensor = tf.truncatedNormal(
+        [2, 2],
+        0,
+        1,
+        "float32",
+        42
+      );
+      appendOutput(
+        `${truncatedNormalCode} <br>tf.truncatedNormal: ${truncatedNormalTensor.toString()}`
+      );
+
+      // Example of tf.zeros
+      const zerosCode = "const zerosTensor = tf.zeros([2, 2]);";
+      const zerosTensor = tf.zeros([2, 2]);
+      appendOutput(`${zerosCode} <br>tf.zeros: ${zerosTensor.toString()}`);
+    </script>
+  </body>
+</html>

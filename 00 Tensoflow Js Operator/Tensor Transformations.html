@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TensorFlow.js Tensor Transformations</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  </head>
+  <body>
+    <h1>TensorFlow.js Tensor Transformations</h1>
+    <div id="output"></div>
+    <script>
+      function appendOutput(text) {
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML += `<p>${text}</p>`;
+      }
+
+      // Example of tf.batchToSpaceND
+      const input1 = tf.tensor4d(
+        [
+          [
+            [[1], [2]],
+            [[3], [4]],
+          ],
+          [
+            [[5], [6]],
+            [[7], [8]],
+          ],
+          [
+            [[9], [10]],
+            [[11], [12]],
+          ],
+          [
+            [[13], [14]],
+            [[15], [16]],
+          ],
+        ],
+        [4, 2, 2, 1]
+      ); // corrected input tensor
+      const blockShape1 = [2, 2];
+      const crops1 = [
+        [0, 0],
+        [0, 0],
+      ];
+      const batchToSpaceNDOutput = tf.batchToSpaceND(
+        input1,
+        blockShape1,
+        crops1
+      );
+      appendOutput(`tf.batchToSpaceND: ${batchToSpaceNDOutput.toString()}`);
+
+      // Example of tf.broadcastArgs
+      const input2 = tf.tensor1d([8], "int32"); // corrected to int32 tensor
+      const input3 = tf.tensor1d([1, 8], "int32"); // corrected to int32 tensor
+      const broadcastArgsOutput = tf.broadcastArgs(input2, input3);
+      appendOutput(`tf.broadcastArgs: ${broadcastArgsOutput.toString()}`);
+
+      // Example of tf.broadcastTo
+      const input4 = tf.scalar(7);
+      const shape = [3];
+      const broadcastToOutput = tf.broadcastTo(input4, shape);
+      appendOutput(`tf.broadcastTo: ${broadcastToOutput.toString()}`);
+
+      // Example of tf.cast
+      const input5 = tf.tensor([1.5, 2.5, 3.5]);
+      const castOutput = input5.cast("int32");
+      appendOutput(`tf.cast: ${castOutput.toString()}`);
+
+      // Example of tf.depthToSpace
+      const input6 = tf.tensor4d(
+        [
+          [
+            [
+              [1, 2, 3, 4],
+              [5, 6, 7, 8],
+            ],
+            [
+              [9, 10, 11, 12],
+              [13, 14, 15, 16],
+            ],
+          ],
+        ],
+        [1, 2, 2, 4]
+      ); // corrected input tensor
+      const blockSize = 2;
+      const depthToSpaceOutput = tf.depthToSpace(input6, blockSize, "NHWC");
+      appendOutput(`tf.depthToSpace: ${depthToSpaceOutput.toString()}`);
+
+      // Example of tf.expandDims
+      const input7 = tf.tensor1d([1, 2]);
+      const axis = 1;
+      const expandDimsOutput = tf.expandDims(input7, axis);
+      appendOutput(`tf.expandDims: ${expandDimsOutput.toString()}`);
+
+      // Example of tf.mirrorPad
+      const input8 = tf.tensor1d([1, 2, 3]);
+      const paddings = [[1, 1]];
+      const mode = "reflect";
+      const mirrorPadOutput = tf.mirrorPad(input8, paddings, mode);
+      appendOutput(`tf.mirrorPad: ${mirrorPadOutput.toString()}`);
+
+      // Example of tf.pad
+      const input9 = tf.tensor1d([1, 2, 3]);
+      const paddings9 = [[1, 1]];
+      const padOutput = tf.pad(input9, paddings9);
+      appendOutput(`tf.pad: ${padOutput.toString()}`);
+
+      // Example of tf.reshape
+      const input10 = tf.tensor2d([1, 2, 3, 4], [2, 2]);
+      const shape10 = [4];
+      const reshapeOutput = tf.reshape(input10, shape10);
+      appendOutput(`tf.reshape: ${reshapeOutput.toString()}`);
+
+      // Example of tf.setdiff1dAsync
+      const input11 = tf.tensor1d([1, 2, 3]);
+      const input12 = tf.tensor1d([1, 3]);
+      tf.setdiff1dAsync(input11, input12).then((setdiff1dOutput) => {
+        appendOutput(`tf.setdiff1dAsync: ${setdiff1dOutput[0].toString()}`);
+      });
+
+      // Example of tf.spaceToBatchND
+      const input13 = tf.tensor4d(
+        [
+          [
+            [[1], [2]],
+            [[3], [4]],
+          ],
+        ],
+        [1, 2, 2, 1]
+      );
+      const blockShape13 = [2, 2];
+      const paddings13 = [
+        [0, 0],
+        [0, 0],
+      ];
+      const spaceToBatchNDOutput = tf.spaceToBatchND(
+        input13,
+        blockShape13,
+        paddings13
+      );
+      appendOutput(`tf.spaceToBatchND: ${spaceToBatchNDOutput.toString()}`);
+
+      // Example of tf.squeeze
+      const input14 = tf.tensor2d([[1], [2], [3]], [3, 1]);
+      const squeezeOutput = tf.squeeze(input14);
+      appendOutput(`tf.squeeze: ${squeezeOutput.toString()}`);
+    </script>
+  </body>
+</html>

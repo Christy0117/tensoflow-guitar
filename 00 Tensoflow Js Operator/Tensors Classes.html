@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TensorFlow.js Examples</title>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+</head>
+<body>
+    <div id="output"></div>
+    <script>
+        // Function to append text to the output div
+        function appendOutput(text) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML += `<p>${text}</p>`;
+        }
+
+        // Create a sample tensor
+        const tensor = tf.tensor([1, 2, 3, 4], [2, 2], 'int32');
+        appendOutput(`Created Tensor: ${tensor.toString()}`);
+
+        // Example of buffer()
+        tensor.buffer().then(buffer => {
+            appendOutput(`buffer(): TensorBuffer: ${buffer.toString()}`);
+        });
+
+        // Example of array()
+        tensor.array().then(array => {
+            appendOutput(`array(): Nested Array: ${JSON.stringify(array)}`);
+        });
+
+        // Example of data()
+        tensor.data().then(data => {
+            appendOutput(`data(): TypedArray: ${data.toString()}`);
+        });
+
+        // Example of dispose()
+        tensor.dispose();
+        appendOutput('dispose(): Tensor has been disposed of');
+    </script>
+</body>
+</html>
