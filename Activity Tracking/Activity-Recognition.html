@@ -1,0 +1,103 @@
+<html>
+   <head>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/knn-classifier"></script>
+      <script>
+         // creating knn-classifier for activity recognition task
+         const knn = knnClassifier.create();
+         
+         // capture screenshot from video stream and print it on canvas
+         function take_screenshot()
+         {
+         	const stream = document.getElementById("movie");
+         	stream.pause();
+         	const canvas = document.getElementById("screenshot");
+         	const draw = canvas.getContext("2d");
+         	draw.drawImage(stream, 0, 0, width=640, height=480);
+         }
+         
+         // add training examples to knn-classifier
+         async function add_example(label)
+         {
+         
+         	// get image from HTML canvas object
+         	const canvas = document.getElementById("screenshot");
+         
+         	// extract features from canvas image using Mobile-Net pre-trained model
+         	const model = await mobilenet.load();
+         	const features = model.infer(canvas, 'conv_preds');
+         
+         	// add training example to knn-classsifier
+         	knn.addExample(features, label);
+         
+         	// resume video playback
+         	const stream = document.getElementById("movie");
+         	stream.play();
+         }
+         
+         // predicts sports activities in the given video
+         async function predict_class()
+         {
+         
+         	// load sample video to test model predictions
+         	const stream = document.getElementById("movie");
+         	stream.src = "video.mp4";
+         
+         	// preparing HTML canvas
+         	const canvas = document.getElementById("screenshot");
+         	const draw = canvas.getContext("2d");
+         	draw.fillStyle = "yellow";
+         	draw.font = "20px Arial";
+         
+         	// load mobile-net model for feature extraction
+         	const model = await mobilenet.load();
+         	while(1)
+         	{
+         
+         		// load video frame into canvas
+         		draw.drawImage(stream, 0, 0, width=640, height=480);
+         
+         		// predict sports activity in canvas image
+         		const features = model.infer(canvas, 'conv_preds');
+         		const result = await knn.predictClass(features);
+         
+         		// print predicted class-label on canvas
+         		draw.fillText(result.label, 50, 100);
+         
+         		// loop to process the next frame
+         		await tf.nextFrame();
+         	}
+         }
+         
+      </script>
+   </head>
+   <body>
+      <video width="640" height="480" id="movie" controls autoplay muted playsinline>
+         <source src="video.mp4" type="video/mp4">
+         </source>
+      </video>
+      <canvas width="640" height="480" id="screenshot"> </canvas>
+      <br> <br>
+      1. <button id="capture" style="background-color:#4682B4;color:white;width:100px;height:50px;font-size:16px">Capture</button>
+      <br> <br>
+      2. <button id="swimming" style="background-color:#708090;color:white;width:100px;height:50px;font-size:16px">Swimming</button>
+      <button id="cycling" style="background-color:#708090;color:white;width:100px;height:50px;font-size:16px">Cycling</button>
+      <button id="boxing" style="background-color:#708090;color:white;width:100px;height:50px;font-size:16px">Boxing</button>
+      <button id="surfing" style="background-color:#708090;color:white;width:100px;height:50px;font-size:16px">Surfing</button>
+      <button id="horse-riding" style="background-color:#708090;color:white;width:130px;height:50px;font-size:16px">Horse Riding</button>
+      <button id="figure-skating" style="background-color:#708090;color:white;width:130px;height:50px;font-size:16px">Figure Skating</button>
+      <br> <br>
+      3. <button id="predict" style="background-color:#4682B4;color:white;width:100px;height:50px;font-size:16px">Predict</button>
+      <script>
+         document.getElementById("capture").addEventListener('click', () => take_screenshot());
+         document.getElementById("swimming").addEventListener('click', () => add_example("swimming"));
+         document.getElementById("cycling").addEventListener('click', () => add_example("cycling"));
+         document.getElementById("boxing").addEventListener('click', () => add_example("boxing"));
+         document.getElementById("surfing").addEventListener('click', () => add_example("surfing"));
+         document.getElementById("figure-skating").addEventListener('click', () => add_example("figure-skating"));
+         document.getElementById("horse-riding").addEventListener('click', () => add_example("horse-riding"));
+         document.getElementById("predict").addEventListener('click', () => predict_class());
+      </script>
+   </body>
+</html>
