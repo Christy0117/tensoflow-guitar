@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Toxicity Detection</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+</head>
+<body>
+    <h1>Text Toxicity Detection</h1>
+    <textarea id="textInput" rows="4" cols="50"></textarea><br>
+    <button onclick="checkToxicity()">Check Toxicity</button>
+    <div id="results"></div>
+
+    <script>
+        let model;
+
+        toxicity.load(0.9).then(loadedModel => {
+            model = loadedModel;
+        });
+
+        function checkToxicity() {
+            const text = document.getElementById('textInput').value;
+            model.classify([text]).then(predictions => {
+                displayResultsAsTable(predictions);
+            });
+        }
+
+        function displayResultsAsTable(predictions) {
+            let table = '<table border="1"><tr><th>Label</th><th>Results</th></tr>';
+            predictions.forEach(prediction => {
+                table += `<tr>
+                            <td>${prediction.label}</td>
+                            <td>${prediction.results[0].match}</td>
+                          </tr>`;
+            });
+            table += '</table>';
+            document.getElementById('results').innerHTML = table;
+        }
+    </script>
+</body>
+</html>

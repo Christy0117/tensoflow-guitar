@@ -1,0 +1,93 @@
+<html>
+  <head></head>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <script lang="js">
+    async function doTraining(model){
+        const history =
+              await model.fit(xs, ys,
+                    { epochs: 600,
+                      callbacks:{
+                          onEpochEnd: async(epoch, logs) =>{
+                              console.log("Epoch:"
+                                          + epoch
+                                          + " Loss:"
+                                          + logs.loss);
+
+                          }
+                      }
+                    });
+    }
+    const model = tf.sequential();
+    model.add(tf.layers.dense({units: 1, inputShape: [1]}));
+    model.compile({loss:'meanSquaredError',
+                   optimizer:'sgd'});
+    model.summary();
+    const xs = tf.tensor2d([0.0, 1.0, 2.0, 3.0, 4.0, 5.0], [6, 1]);
+    const ys = tf.tensor2d([0.0, 2.0, 4.0, 6.0, 8.0, 10.0], [6, 1]);
+    doTraining(model).then(() => {
+        alert(model.predict(tf.tensor2d([10], [1,1])));
+    });
+  </script>
+  <body>
+    <h1>Custom Model Creation (Beginneer Level)</h1>
+    <p>
+      The Custom Model is created with 1 input neuron and 1 output neuron. The
+      Model uses Mean Squared Erroras the loss function and optimiser as
+      Stochastic Gradient Descent (SGD) Data trained as given below:
+    </p>
+    <style type="text/css">
+      .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      .tg td {
+        border-color: rgba(21, 4, 4, 0.906);
+        border-style: solid;
+        border-width: 1px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        overflow: hidden;
+        padding: 10px 5px;
+        word-break: normal;
+      }
+      .tg th {
+        border-color: black;
+        border-style: solid;
+        border-width: 1px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        overflow: hidden;
+        padding: 10px 5px;
+        word-break: normal;
+      }
+      .tg .tg-0lax {
+        text-align: left;
+        vertical-align: top;
+      }
+    </style>
+    <table class="tg">
+      <thead>
+        <tr>
+          <th class="tg-0lax">X</th>
+          <th class="tg-0lax">1</th>
+          <th class="tg-0lax">2</th>
+          <th class="tg-0lax">3</th>
+          <th class="tg-0lax">4</th>
+          <th class="tg-0lax">5</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-0lax">Y</td>
+          <td class="tg-0lax">2</td>
+          <td class="tg-0lax">4</td>
+          <td class="tg-0lax">6</td>
+          <td class="tg-0lax">8</td>
+          <td class="tg-0lax">10</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Predicting result for 10.0 :</p>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+<img id="img" src="harddisk.jpg" crossorigin="anonymous"></img>
+<div id="result"></div>
+<script>
+  window.onload = async () => {
+      const img = document.getElementById('img');
+      const model = await mobilenet.load();
+      const predictions = await model.classify(img);
+      console.log(predictions);
+      if (predictions && predictions.length > 0) {
+          document.getElementById("result").innerHTML = predictions[0].className;
+      } else {
+          document.getElementById("result").innerHTML = "No predictions found.";
+      }
+  };
+</script>

@@ -1,0 +1,14 @@
+<html>
+  <head></head>
+  <body>
+    <h1>Basics Model Building</h1>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script lang="js">
+      const model = tf.sequential();
+         model.add(tf.layers.dense({units: 1, inputShape: [1]}));
+         model.compile({loss:'meanSquaredError',
+                        optimizer:'sgd'});
+         model.summary();
+    </script>
+  </body>
+</html>

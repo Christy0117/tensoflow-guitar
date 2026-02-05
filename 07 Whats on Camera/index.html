@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/@tensorflow/tfjs@0.10.3"></script>
+    <script src="https://unpkg.com/@tensorflow-models/mobilenet@0.0.1"></script>
+    <script>
+      // body calls setup() onload:
+      function setup() {
+        let video = document.getElementById("video");
+        let canvas = document.getElementById("canvas");
+        let predictionsText = document.getElementById("predictions");
+        let model = null;
+
+        main();
+
+        async function main() {
+          model = await mobilenet.load();
+          await startCamera();
+        }
+
+        async function startCamera() {
+          let stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          video.srcObject = stream;
+          await video.play();
+          setInterval(() => takeSnapshot(), 1000);
+        }
+
+        function takeSnapshot() {
+          let context = canvas.getContext("2d");
+          let width = video.videoWidth;
+          let height = video.videoHeight;
+          let hasWidthAndHeight = width && height;
+          if (hasWidthAndHeight) {
+            // Setup a canvas with the same dimensions as the video.
+            canvas.width = width;
+            canvas.height = height;
+            // Make a copy of the current frame in the video on the canvas.
+            context.drawImage(video, 0, 0, width, height);
+            classifyImage();
+          }
+        }
+
+        async function classifyImage() {
+          predictions = await model.classify(canvas);
+          displayPredictions(predictions);
+        }
+
+        function displayPredictions(predictions) {
+          let outputString = "";
+          for (prediction of predictions) {
+            let percent = (prediction.probability * 100).toFixed(2);
+            outputString += `${percent}% | ${prediction.className}\n`;
+            console.log(outputString);
+          }
+          predictionsText.innerHTML = outputString;
+        }
+      }
+    </script>
+    <style>
+      * {
+        background: rgb(32, 32, 32);
+        color: whitesmoke;
+        font-family: avenir, arial;
+        padding: 10px;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+
+  <body onload="setup()">
+    <div style="text-align: center">
+      <h1>What's on camera?</h1>
+      <video id="video">Video stream not available.</video>
+      <pre id="predictions"></pre>
+      <canvas id="canvas" style="display: none"></canvas>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ChatBot</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="center-text">
+      <i class="material-icons" style="font-size: 136px">healing</i>
+      <h2><b>Dzone ChatBot</b></h2>
+      <p>
+        <i
+          >Provide Any Paragraph below and ask questions based on it <br />
+          Answer will given based on question and alert will be provided for
+          toxic input</i
+        >
+      </p>
+      <textarea id="inputPassage" rows="12" cols="100">
+The Android phone is a smartphone designed to deliver an exceptional user experience with its advanced technology and cutting-edge features. With its sleek and stylish design, this phone offers a beautiful 6.5-inch OLED display with a resolution of 1080 x 2400 pixels. The device is equipped with a powerful octa-core processor with a clock speed of 2.3 GHz, which provides lightning-fast performance, making it easy to multitask and switch between apps seamlessly.The Android phone comes with 6GB of RAM and 128GB of internal storage, which is expandable up to 512GB with a microSD card. This phone runs on the latest Android 12 operating system, which offers a smooth and intuitive user interface, along with improved privacy features.The camera system of the Android phone is impressive, with a triple-lens setup consisting of a 64-megapixel primary lens, a 12-megapixel ultra-wide lens, and a 5-megapixel depth sensor. The front-facing camera is also top-notch, with a 16-megapixel lens that can capture stunning selfies and high-quality video calls.Other features of this phone include a large 5000mAh battery that can last all day, support for 5G connectivity, Bluetooth 5.2, Wi-Fi 6, and NFC. The phone is also equipped with an under-display fingerprint sensor for secure and easy access.
+</textarea
+      >
+      <p id="toxic">Toxic Message Detected</p>
+    </div>
+    <div id="body">
+      <div id="chat-circle" class="btn btn-raised">
+        <div id="chat-overlay"></div>
+        <i class="material-icons">speaker_phone</i>
+      </div>
+      <div class="chat-box">
+        <div class="chat-box-header">
+          <b> Dzone ChatBot</b>
+          <span class="chat-box-toggle"
+            ><i class="material-icons">close</i></span
+          >
+        </div>
+        <div class="chat-box-body">
+          <div class="chat-box-overlay"></div>
+          <div class="chat-logs"></div>
+          <!--chat-log -->
+        </div>
+        <div class="chat-input">
+          <form>
+            <input
+              type="text"
+              id="chat-input"
+              placeholder="Send a message..." />
+            <button type="submit" class="chat-submit" id="chat-submit">
+              <i class="material-icons">send</i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>

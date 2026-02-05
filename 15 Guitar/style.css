@@ -1,0 +1,40 @@
+html, body{
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+}
+.overlay{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.95);
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  padding:20px;
+  box-sizing: border-box;
+  justify-content: center;
+  transition:0.25s all;
+}
+.overlay div{
+  max-width:600px;
+  text-align:center;
+}
+.overlay.active{
+  opacity:1;
+}
+
+button{
+  background-color:#fff;
+  border:1px solid #000;
+  padding:10px 50px;
+  border-radius: 3px;
+  transition:0.25s all;
+  cursor:pointer;
+}
+
+button:hover{
+  background-color:#eee;
+
+}

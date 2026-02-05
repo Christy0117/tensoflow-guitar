@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <title>Body Segmentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix"></script>
+  </head>
+
+  <body>
+    <h1>Body Segmentation</h1>
+    <video width="640" height="480" autoplay muted id="camera"></video>
+    <canvas width="640" height="480" id="body_pix"> </canvas>
+    <script>
+      // Function to process input video feed and create segmentation
+      async function body_segment() {
+        const frame = document.getElementById("camera");
+
+        // Load HTML canvas
+        const canvas = document.getElementById("body_pix");
+        const draw = canvas.getContext("2d");
+        draw.globalAlpha = 0.3;
+
+        // Color codes for segments
+        const Color_Codes = [
+          "#663399",
+          "#663399",
+          "#BA55D3",
+          "#BA55D3",
+          "#BA55D3",
+          "#BA55D3",
+          "#BA55D3",
+          "#BA55D3",
+          "#BA55D3",
+          "#BA55D3",
+          "#DA70D6",
+          "#DA70D6",
+          "#4682B4",
+          "#4682B4",
+          "#008080",
+          "#008080",
+          "#008080",
+          "#008080",
+          "#008080",
+          "#008080",
+          "#008080",
+          "#008080",
+          "#008000",
+          "#008000",
+        ];
+
+        // Load Body segmentation model
+        const model = await bodyPix.load();
+
+        while (1) {
+          // Draw frame on canvas
+          draw.drawImage(frame, 0, 0, 640, 480);
+
+          // Extract person from frame
+          const result = await model.segmentPersonParts(frame);
+
+          // Sample postions of the body parts
+          console.log(result.allPoses[0].keypoints);
+
+          const pixels = result.data;
+
+          // Colorizing pixels based on their segment ids
+          for (x = 0; x < canvas.width; x++) {
+            for (y = 0; y < canvas.height; y++) {
+              const xy = x * canvas.width + y;
+              var color_code = "";
+              if (pixels[xy] != -1) {
+                // Get color code of the segment
+                color_code = Color_Codes[pixels[xy]];
+              } else {
+                // Fill background with black color
+                color_code = "#000000";
+              }
+              draw.fillStyle = color_code;
+              draw.fillRect(y, x, 1, 1);
+            }
+          }
+
+          // Loop to process the next frame
+          await tf.nextFrame();
+        }
+      }
+    </script>
+
+    <script>
+      video = document.getElementById("camera");
+      // Capture live video stream from web camera
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then(function (stream) {
+            video.srcObject = stream;
+          });
+      }
+
+      // Run segmentation once the video is ready for processing
+      main();
+
+      function main() {
+        // Check if the video is loaded and ready for processing
+        if (video.readyState == 4) {
+          console.log("Video is ready for processing..");
+          body_segment();
+        } else {
+          console.log("Nope, not ready yet..");
+          setTimeout(main, 1000 / 30);
+        }
+      }
+    </script>
+  </body>
+</html>
